@@ -5,10 +5,11 @@ import { UpgradeScripts } from './upgrades.js'
 import ActionManager from './managers/actionManager.js'
 import FeedbackManager from './managers/feedbackManager.js'
 import PresetManager from './managers/presetManager.js'
-import initInputs from './utils/input.js'
 
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig // Setup in init()
+
+	public static self: ModuleInstance;
 
 	constructor(internal: unknown) {
 		super(internal);
@@ -16,15 +17,15 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	}
 
 	async init(config: ModuleConfig): Promise<void> {
+		ModuleInstance.self = this;
 		this.config = config
 
 		this.updateStatus(InstanceStatus.Ok)
 
 		this.updateActions() // export actions
-		this.updateFeedbacks() // export feedbacks
-		this.updatePresets() // export presets
-		this.updateVariableDefinitions() // export variable definitions
-		initInputs()
+			.updateFeedbacks() // export feedbacks
+			.updatePresets() // export presets
+			.updateVariableDefinitions() // export variable definitions
 	}
 	// When module gets deleted
 	async destroy(): Promise<void> {
@@ -40,20 +41,24 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		return GetConfigFields(this)
 	}
 
-	updateActions(): void {
+	updateActions(): ModuleInstance {
 		ActionManager.init().UpdateActions(this)
+		return this
 	}
 
-	updateFeedbacks(): void {
+	updateFeedbacks(): ModuleInstance {
 		FeedbackManager.init().UpdateFeedbacks(this)
+		return this
 	}
 
-	updatePresets(): void {
+	updatePresets(): ModuleInstance {
 		PresetManager.init().UpdatePresets(this)
+		return this
 	}
 
-	updateVariableDefinitions(): void {
+	updateVariableDefinitions(): ModuleInstance {
 		VariablesCtrl.UpdateVariableDefinitions()
+		return this
 	}
 }
 

@@ -5,8 +5,8 @@
 	"description": "To control variable and animate them.",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/gwenitora/gscore.git",
-	"bugs": "https://github.com/gwenitora/gscore/issues",
+	"repository": "git+https://github.com/gwenitora/GScore.git",
+	"bugs": "https://github.com/gwenitora/GScore/issues",
 	"maintainers": [
 		{
 			"name": "Gwenitora",
